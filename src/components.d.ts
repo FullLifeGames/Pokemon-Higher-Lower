@@ -12,5 +12,8 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Button: typeof import('./components/ui/button/Button.vue')['default']
+    GameBoard: typeof import('./components/GameBoard.vue')['default']
+    GameMenu: typeof import('./components/GameMenu.vue')['default']
+    GameOver: typeof import('./components/GameOver.vue')['default']
   }
 }
