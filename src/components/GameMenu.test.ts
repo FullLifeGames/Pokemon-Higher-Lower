@@ -10,8 +10,7 @@ describe('GameMenu', () => {
     maxGeneration: 9,
     fullyEvolvedOnly: false,
     canStart: true,
-    highScoreWeight: 0,
-    highScoreBst: 0,
+    highScores: { weight: 0, bst: 0 },
   }
 
   beforeEach(() => {
@@ -33,7 +32,7 @@ describe('GameMenu', () => {
     const wrapper = mount(GameMenu, {
       props: {
         ...defaultProps,
-        highScoreWeight: 15,
+        highScores: { weight: 15, bst: 0 },
       },
       global: {
         plugins: [i18n],
@@ -165,8 +164,7 @@ describe('GameMenu', () => {
       props: {
         ...defaultProps,
         guessMode: 'weight',
-        highScoreWeight: 10,
-        highScoreBst: 20,
+        highScores: { weight: 10, bst: 20 },
       },
       global: {
         plugins: [i18n],

@@ -215,7 +215,7 @@ describe('useGame', () => {
 
       vi.advanceTimersByTime(2500)
 
-      expect(game.highScoreWeight.value).toBeGreaterThanOrEqual(game.score.value)
+      expect(game.highScores.value.weight).toBeGreaterThanOrEqual(game.score.value)
     })
   })
 
@@ -247,14 +247,14 @@ describe('useGame', () => {
   describe('high score tracking', () => {
     it('should track separate high scores for weight and bst modes', () => {
       const game = useGame()
-      expect(game.highScoreWeight.value).toBe(0)
-      expect(game.highScoreBst.value).toBe(0)
+      expect(game.highScores.value.weight).toBe(0)
+      expect(game.highScores.value.bst).toBe(0)
     })
 
     it('should return correct high score based on current mode', async () => {
       const game = useGame()
-      game.highScoreWeight.value = 10
-      game.highScoreBst.value = 15
+      game.highScores.value.weight = 10
+      game.highScores.value.bst = 15
 
       await nextTick()
 

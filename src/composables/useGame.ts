@@ -9,15 +9,25 @@ import {
 
 export type GamePhase = 'menu' | 'playing' | 'revealing' | 'gameover'
 
+export type HighScores = Record<GuessMode, number>
+
+const defaultHighScores: HighScores = {
+  weight: 0,
+  bst: 0,
+  hp: 0,
+  attack: 0,
+  defense: 0,
+  specialAttack: 0,
+  specialDefense: 0,
+  speed: 0,
+}
+
 export function useGame() {
   const phase = ref<GamePhase>('menu')
   const score = ref(0)
-  const highScoreWeight = useLocalStorage('pokemon-hl-highscore-weight', 0)
-  const highScoreBst = useLocalStorage('pokemon-hl-highscore-bst', 0)
+  const highScores = useLocalStorage<HighScores>('pokemon-hl-highscores', { ...defaultHighScores })
 
-  const highScore = computed(() =>
-    guessMode.value === 'weight' ? highScoreWeight.value : highScoreBst.value,
-  )
+  const highScore = computed(() => highScores.value[guessMode.value])
 
   // Configuration
   const guessMode = ref<GuessMode>('weight')
@@ -88,10 +98,8 @@ export function useGame() {
           })
         }, 300)
       } else {
-        if (guessMode.value === 'weight') {
-          if (score.value > highScoreWeight.value) highScoreWeight.value = score.value
-        } else {
-          if (score.value > highScoreBst.value) highScoreBst.value = score.value
+        if (score.value > highScores.value[guessMode.value]) {
+          highScores.value[guessMode.value] = score.value
         }
         phase.value = 'gameover'
       }
@@ -110,8 +118,7 @@ export function useGame() {
     phase,
     score,
     highScore,
-    highScoreWeight,
-    highScoreBst,
+    highScores,
     guessMode,
     generation,
     minGeneration,

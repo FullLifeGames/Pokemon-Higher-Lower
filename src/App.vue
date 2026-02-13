@@ -8,8 +8,7 @@ const {
   phase,
   score,
   highScore,
-  highScoreWeight,
-  highScoreBst,
+  highScores,
   guessMode,
   minGeneration,
   maxGeneration,
@@ -36,8 +35,7 @@ const {
         v-model:maxGeneration="maxGeneration"
         v-model:fullyEvolvedOnly="fullyEvolvedOnly"
         :can-start="canStart"
-        :high-score-weight="highScoreWeight"
-        :high-score-bst="highScoreBst"
+        :high-scores="highScores"
         @start="startGame()"
       />
 

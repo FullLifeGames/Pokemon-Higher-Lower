@@ -1,6 +1,6 @@
 import { Dex, type Species } from '@pkmn/dex'
 
-export type GuessMode = 'weight' | 'bst'
+export type GuessMode = 'weight' | 'bst' | 'hp' | 'attack' | 'defense' | 'specialAttack' | 'specialDefense' | 'speed'
 
 export interface GameConfig {
   generation: number
@@ -59,7 +59,24 @@ export function getFilteredSpecies(config: GameConfig): Species[] {
 }
 
 export function getGuessValue(pokemon: Species, mode: GuessMode): number {
-  return mode === 'weight' ? pokemon.weightkg : getBST(pokemon)
+  switch (mode) {
+    case 'weight':
+      return pokemon.weightkg
+    case 'bst':
+      return getBST(pokemon)
+    case 'hp':
+      return pokemon.baseStats.hp
+    case 'attack':
+      return pokemon.baseStats.atk
+    case 'defense':
+      return pokemon.baseStats.def
+    case 'specialAttack':
+      return pokemon.baseStats.spa
+    case 'specialDefense':
+      return pokemon.baseStats.spd
+    case 'speed':
+      return pokemon.baseStats.spe
+  }
 }
 
 export function getGuessUnit(mode: GuessMode): string {

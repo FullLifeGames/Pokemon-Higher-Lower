@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import type { GuessMode } from '@/dex-util'
+import type { HighScores } from '@/composables/useGame'
 
 const { t } = useI18n()
 
@@ -10,8 +11,7 @@ const props = defineProps<{
   maxGeneration: number
   fullyEvolvedOnly: boolean
   canStart: boolean
-  highScoreWeight: number
-  highScoreBst: number
+  highScores: HighScores
 }>()
 
 const emit = defineEmits<{
@@ -24,9 +24,28 @@ const emit = defineEmits<{
 
 const locale = useI18n().locale
 
-const activeHighScore = computed(() =>
-  props.guessMode === 'weight' ? props.highScoreWeight : props.highScoreBst
-)
+const activeHighScore = computed(() => props.highScores[props.guessMode])
+
+const startButtonClass = computed(() => {
+  switch (props.guessMode) {
+    case 'weight':
+      return 'bg-gradient-to-r from-red-500/90 to-red-600/90 hover:from-red-500 hover:to-red-600 text-white shadow-lg shadow-red-500/20'
+    case 'bst':
+      return 'bg-gradient-to-r from-blue-500/90 to-blue-600/90 hover:from-blue-500 hover:to-blue-600 text-white shadow-lg shadow-blue-500/20'
+    case 'hp':
+      return 'bg-gradient-to-r from-pink-500/90 to-pink-600/90 hover:from-pink-500 hover:to-pink-600 text-white shadow-lg shadow-pink-500/20'
+    case 'attack':
+      return 'bg-gradient-to-r from-orange-500/90 to-orange-600/90 hover:from-orange-500 hover:to-orange-600 text-white shadow-lg shadow-orange-500/20'
+    case 'defense':
+      return 'bg-gradient-to-r from-yellow-500/90 to-yellow-600/90 hover:from-yellow-500 hover:to-yellow-600 text-white shadow-lg shadow-yellow-500/20'
+    case 'specialAttack':
+      return 'bg-gradient-to-r from-purple-500/90 to-purple-600/90 hover:from-purple-500 hover:to-purple-600 text-white shadow-lg shadow-purple-500/20'
+    case 'specialDefense':
+      return 'bg-gradient-to-r from-green-500/90 to-green-600/90 hover:from-green-500 hover:to-green-600 text-white shadow-lg shadow-green-500/20'
+    case 'speed':
+      return 'bg-gradient-to-r from-cyan-500/90 to-cyan-600/90 hover:from-cyan-500 hover:to-cyan-600 text-white shadow-lg shadow-cyan-500/20'
+  }
+})
 </script>
 
 <template>
@@ -76,7 +95,7 @@ const activeHighScore = computed(() =>
         <label class="block text-[11px] font-medium mb-2.5 uppercase tracking-[0.15em] text-white/40">
           {{ t('mode.select') }}
         </label>
-        <div class="grid grid-cols-2 gap-2">
+        <div class="grid grid-cols-2 gap-2 mb-2">
           <button
             class="relative px-4 py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 cursor-pointer border"
             :class="guessMode === 'weight'
@@ -102,6 +121,87 @@ const activeHighScore = computed(() =>
               {{ t('mode.bst') }}
             </span>
             <span v-if="guessMode === 'bst'" class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full bg-blue-400/80" />
+          </button>
+        </div>
+        <!-- Individual stat modes -->
+        <div class="grid grid-cols-6 gap-1.5">
+          <button
+            class="relative px-2 py-2.5 rounded-lg font-semibold text-xs transition-all duration-200 cursor-pointer border"
+            :class="guessMode === 'hp'
+              ? 'bg-white/[0.08] border-pink-400/40 text-white shadow-lg shadow-white/[0.03]'
+              : 'bg-transparent border-white/[0.06] text-white/40 hover:border-white/10 hover:text-white/60'"
+            @click="emit('update:guessMode', 'hp')"
+          >
+            <span class="flex flex-col items-center justify-center gap-1">
+              <span class="text-sm">❤️</span>
+              <span class="text-[10px]">{{ t('mode.hp') }}</span>
+            </span>
+            <span v-if="guessMode === 'hp'" class="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-0.5 rounded-full bg-pink-400/80" />
+          </button>
+          <button
+            class="relative px-2 py-2.5 rounded-lg font-semibold text-xs transition-all duration-200 cursor-pointer border"
+            :class="guessMode === 'attack'
+              ? 'bg-white/[0.08] border-orange-400/40 text-white shadow-lg shadow-white/[0.03]'
+              : 'bg-transparent border-white/[0.06] text-white/40 hover:border-white/10 hover:text-white/60'"
+            @click="emit('update:guessMode', 'attack')"
+          >
+            <span class="flex flex-col items-center justify-center gap-1">
+              <span class="text-sm">⚔️</span>
+              <span class="text-[10px]">{{ t('mode.attack') }}</span>
+            </span>
+            <span v-if="guessMode === 'attack'" class="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-0.5 rounded-full bg-orange-400/80" />
+          </button>
+          <button
+            class="relative px-2 py-2.5 rounded-lg font-semibold text-xs transition-all duration-200 cursor-pointer border"
+            :class="guessMode === 'defense'
+              ? 'bg-white/[0.08] border-yellow-400/40 text-white shadow-lg shadow-white/[0.03]'
+              : 'bg-transparent border-white/[0.06] text-white/40 hover:border-white/10 hover:text-white/60'"
+            @click="emit('update:guessMode', 'defense')"
+          >
+            <span class="flex flex-col items-center justify-center gap-1">
+              <span class="text-sm">🛡️</span>
+              <span class="text-[10px]">{{ t('mode.defense') }}</span>
+            </span>
+            <span v-if="guessMode === 'defense'" class="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-0.5 rounded-full bg-yellow-400/80" />
+          </button>
+          <button
+            class="relative px-2 py-2.5 rounded-lg font-semibold text-xs transition-all duration-200 cursor-pointer border"
+            :class="guessMode === 'specialAttack'
+              ? 'bg-white/[0.08] border-purple-400/40 text-white shadow-lg shadow-white/[0.03]'
+              : 'bg-transparent border-white/[0.06] text-white/40 hover:border-white/10 hover:text-white/60'"
+            @click="emit('update:guessMode', 'specialAttack')"
+          >
+            <span class="flex flex-col items-center justify-center gap-1">
+              <span class="text-sm">✨</span>
+              <span class="text-[10px]">{{ t('mode.specialAttack') }}</span>
+            </span>
+            <span v-if="guessMode === 'specialAttack'" class="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-0.5 rounded-full bg-purple-400/80" />
+          </button>
+          <button
+            class="relative px-2 py-2.5 rounded-lg font-semibold text-xs transition-all duration-200 cursor-pointer border"
+            :class="guessMode === 'specialDefense'
+              ? 'bg-white/[0.08] border-green-400/40 text-white shadow-lg shadow-white/[0.03]'
+              : 'bg-transparent border-white/[0.06] text-white/40 hover:border-white/10 hover:text-white/60'"
+            @click="emit('update:guessMode', 'specialDefense')"
+          >
+            <span class="flex flex-col items-center justify-center gap-1">
+              <span class="text-sm">🔮</span>
+              <span class="text-[10px]">{{ t('mode.specialDefense') }}</span>
+            </span>
+            <span v-if="guessMode === 'specialDefense'" class="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-0.5 rounded-full bg-green-400/80" />
+          </button>
+          <button
+            class="relative px-2 py-2.5 rounded-lg font-semibold text-xs transition-all duration-200 cursor-pointer border"
+            :class="guessMode === 'speed'
+              ? 'bg-white/[0.08] border-cyan-400/40 text-white shadow-lg shadow-white/[0.03]'
+              : 'bg-transparent border-white/[0.06] text-white/40 hover:border-white/10 hover:text-white/60'"
+            @click="emit('update:guessMode', 'speed')"
+          >
+            <span class="flex flex-col items-center justify-center gap-1">
+              <span class="text-sm">💨</span>
+              <span class="text-[10px]">{{ t('mode.speed') }}</span>
+            </span>
+            <span v-if="guessMode === 'speed'" class="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-0.5 rounded-full bg-cyan-400/80" />
           </button>
         </div>
       </div>
@@ -162,9 +262,7 @@ const activeHighScore = computed(() =>
       <button
         :disabled="!canStart"
         class="w-full py-4 rounded-xl text-base font-bold tracking-wide transition-all duration-200 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
-        :class="guessMode === 'weight'
-          ? 'bg-gradient-to-r from-red-500/90 to-red-600/90 hover:from-red-500 hover:to-red-600 text-white shadow-lg shadow-red-500/20'
-          : 'bg-gradient-to-r from-blue-500/90 to-blue-600/90 hover:from-blue-500 hover:to-blue-600 text-white shadow-lg shadow-blue-500/20'"
+        :class="startButtonClass"
         @click="emit('start')"
       >
         {{ t('game.start') }}
