@@ -30,6 +30,8 @@ const startButtonClass = computed(() => {
   switch (props.guessMode) {
     case 'weight':
       return 'bg-gradient-to-r from-red-500/90 to-red-600/90 hover:from-red-500 hover:to-red-600 text-white shadow-lg shadow-red-500/20'
+    case 'height':
+      return 'bg-gradient-to-r from-emerald-600/90 to-emerald-700/90 hover:from-emerald-600 hover:to-emerald-700 text-white shadow-lg shadow-emerald-600/20'
     case 'bst':
       return 'bg-gradient-to-r from-blue-500/90 to-blue-600/90 hover:from-blue-500 hover:to-blue-600 text-white shadow-lg shadow-blue-500/20'
     case 'hp':
@@ -95,7 +97,7 @@ const startButtonClass = computed(() => {
         <label class="block text-[11px] font-medium mb-2.5 uppercase tracking-[0.15em] text-white/40">
           {{ t('mode.select') }}
         </label>
-        <div class="grid grid-cols-2 gap-2 mb-2">
+        <div class="grid grid-cols-3 gap-2 mb-2">
           <button
             class="relative px-4 py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 cursor-pointer border"
             :class="guessMode === 'weight'
@@ -108,6 +110,19 @@ const startButtonClass = computed(() => {
               {{ t('mode.weight') }}
             </span>
             <span v-if="guessMode === 'weight'" class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full bg-red-400/80" />
+          </button>
+          <button
+            class="relative px-4 py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 cursor-pointer border"
+            :class="guessMode === 'height'
+              ? 'bg-white/[0.08] border-white/20 text-white shadow-lg shadow-white/[0.03]'
+              : 'bg-transparent border-white/[0.06] text-white/40 hover:border-white/10 hover:text-white/60'"
+            @click="emit('update:guessMode', 'height')"
+          >
+            <span class="flex items-center justify-center gap-2">
+              <span class="text-base">📏</span>
+              {{ t('mode.height') }}
+            </span>
+            <span v-if="guessMode === 'height'" class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full bg-emerald-400/80" />
           </button>
           <button
             class="relative px-4 py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 cursor-pointer border"

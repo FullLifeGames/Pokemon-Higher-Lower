@@ -102,6 +102,10 @@ describe('dex-util', () => {
       expect(getGuessUnit('weight')).toBe('kg')
     })
 
+    it('should return "m" for height mode', () => {
+      expect(getGuessUnit('height')).toBe('m')
+    })
+
     it('should return empty string for bst mode', () => {
       expect(getGuessUnit('bst')).toBe('')
     })

@@ -51,6 +51,7 @@ const {
         :last-guess-correct="lastGuessCorrect"
         :is-transitioning="isTransitioning"
         @guess="makeGuess($event)"
+        @back-to-menu="goToMenu()"
       />
     </Transition>
 

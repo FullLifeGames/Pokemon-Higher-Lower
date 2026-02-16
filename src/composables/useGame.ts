@@ -13,6 +13,7 @@ export type HighScores = Record<GuessMode, number>
 
 const defaultHighScores: HighScores = {
   weight: 0,
+  height: 0,
   bst: 0,
   hp: 0,
   attack: 0,
@@ -25,7 +26,15 @@ const defaultHighScores: HighScores = {
 export function useGame() {
   const phase = ref<GamePhase>('menu')
   const score = ref(0)
-  const highScores = useLocalStorage<HighScores>('pokemon-hl-highscores', { ...defaultHighScores })
+  const storedScores = useLocalStorage<HighScores>('pokemon-hl-highscores', { ...defaultHighScores })
+  
+  // Merge with defaultHighScores to ensure all modes have a value (handles adding new modes)
+  const highScores = computed({
+    get: () => ({ ...defaultHighScores, ...storedScores.value }),
+    set: (value: HighScores) => {
+      storedScores.value = value
+    },
+  })
 
   const highScore = computed(() => highScores.value[guessMode.value])
 
@@ -99,7 +108,10 @@ export function useGame() {
         }, 300)
       } else {
         if (score.value > highScores.value[guessMode.value]) {
-          highScores.value[guessMode.value] = score.value
+          highScores.value = {
+            ...highScores.value,
+            [guessMode.value]: score.value,
+          }
         }
         phase.value = 'gameover'
       }

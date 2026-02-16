@@ -1,6 +1,7 @@
 import { Dex, type Species } from '@pkmn/dex'
+import { Dex as SimDex } from '@pkmn/sim'
 
-export type GuessMode = 'weight' | 'bst' | 'hp' | 'attack' | 'defense' | 'specialAttack' | 'specialDefense' | 'speed'
+export type GuessMode = 'weight' | 'height' | 'bst' | 'hp' | 'attack' | 'defense' | 'specialAttack' | 'specialDefense' | 'speed'
 
 export interface GameConfig {
   generation: number
@@ -62,6 +63,11 @@ export function getGuessValue(pokemon: Species, mode: GuessMode): number {
   switch (mode) {
     case 'weight':
       return pokemon.weightkg
+    case 'height': {
+      // Use @pkmn/sim to access heightm property
+      const simSpecies = SimDex.species.get(pokemon.name)
+      return simSpecies?.heightm ?? 0
+    }
     case 'bst':
       return getBST(pokemon)
     case 'hp':
@@ -80,7 +86,14 @@ export function getGuessValue(pokemon: Species, mode: GuessMode): number {
 }
 
 export function getGuessUnit(mode: GuessMode): string {
-  return mode === 'weight' ? 'kg' : ''
+  switch (mode) {
+    case 'weight':
+      return 'kg'
+    case 'height':
+      return 'm'
+    default:
+      return ''
+  }
 }
 
 export function getSpriteUrl(pokemon: Species): string {

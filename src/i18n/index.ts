@@ -18,6 +18,7 @@ const messages = {
     mode: {
       select: 'What do you want to compare?',
       weight: 'Weight',
+      height: 'Height',
       bst: 'Base Stats',
       hp: 'HP',
       attack: 'Attack',
@@ -65,6 +66,7 @@ const messages = {
     mode: {
       select: 'Was möchtest du vergleichen?',
       weight: 'Gewicht',
+      height: 'Größe',
       bst: 'Statuswerte',
       hp: 'KP',
       attack: 'Angriff',

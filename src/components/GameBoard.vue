@@ -21,6 +21,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   guess: [choice: 'higher' | 'lower']
+  backToMenu: []
 }>()
 
 const currentValue = computed(() => getGuessValue(props.currentPokemon, props.guessMode))
@@ -79,6 +80,17 @@ const nextName = computed(() => getLocalizedPokemonName(props.nextPokemon.name, 
     class="h-dvh w-full flex flex-col landscape:flex-row md:flex-row relative overflow-hidden transition-opacity duration-300"
     :class="{ 'opacity-0': isTransitioning }"
   >
+    <!-- Back button -->
+    <button
+      class="absolute top-2 md:top-4 left-2 md:left-4 z-30 bg-black/50 backdrop-blur-md rounded-full p-2 md:p-3 shadow-lg hover:bg-black/70 transition-colors group cursor-pointer"
+      :title="t('game.backToMenu')"
+      @click="emit('backToMenu')"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 md:w-5 md:h-5 text-white/70 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      </svg>
+    </button>
+
     <!-- Score bar -->
     <div class="absolute top-2 md:top-4 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 md:gap-3 bg-black/50 backdrop-blur-md rounded-full px-3 md:px-5 py-1 landscape:py-1 md:py-2 shadow-lg">
       <span class="text-white/70 text-[10px] md:text-xs font-semibold uppercase tracking-wider">{{ t('game.score') }}</span>
@@ -170,7 +182,7 @@ const nextName = computed(() => getLocalizedPokemonName(props.nextPokemon.name, 
             @load="nextImgLoaded = true"
           >
         </div>
-        <h2 class="text-xl sm:text-2xl landscape:text-base landscape:md:text-4xl md:text-4xl font-black mt-2 landscape:mt-1 md:mt-3 mb-2 landscape:mb-1 md:mb-4 drop-shadow-lg">
+        <h2 class="text-xl sm:text-2xl landscape:text-base landscape:md:text-4xl md:text-4xl font-black mt-2 landscape:mt-1 md:mt-3 mb-2 landscape:mb-3 md:mb-4 drop-shadow-lg">
           {{ nextName }}
         </h2>
 

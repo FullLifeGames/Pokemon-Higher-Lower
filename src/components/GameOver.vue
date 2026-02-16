@@ -4,7 +4,7 @@ import type { GuessMode } from '@/dex-util'
 
 const { t } = useI18n()
 
-defineProps<{
+const props = defineProps<{
   score: number
   highScore: number
   guessMode: GuessMode
@@ -14,6 +14,29 @@ const emit = defineEmits<{
   playAgain: []
   backToMenu: []
 }>()
+
+const buttonClass = computed(() => {
+  switch (props.guessMode) {
+    case 'weight':
+      return 'bg-red-500/90 hover:bg-red-500 text-white shadow-lg shadow-red-500/20'
+    case 'height':
+      return 'bg-emerald-600/90 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-600/20'
+    case 'bst':
+      return 'bg-blue-500/90 hover:bg-blue-500 text-white shadow-lg shadow-blue-500/20'
+    case 'hp':
+      return 'bg-pink-500/90 hover:bg-pink-500 text-white shadow-lg shadow-pink-500/20'
+    case 'attack':
+      return 'bg-orange-500/90 hover:bg-orange-500 text-white shadow-lg shadow-orange-500/20'
+    case 'defense':
+      return 'bg-yellow-500/90 hover:bg-yellow-500 text-white shadow-lg shadow-yellow-500/20'
+    case 'specialAttack':
+      return 'bg-purple-500/90 hover:bg-purple-500 text-white shadow-lg shadow-purple-500/20'
+    case 'specialDefense':
+      return 'bg-green-500/90 hover:bg-green-500 text-white shadow-lg shadow-green-500/20'
+    case 'speed':
+      return 'bg-cyan-500/90 hover:bg-cyan-500 text-white shadow-lg shadow-cyan-500/20'
+  }
+})
 </script>
 
 <template>
@@ -26,7 +49,17 @@ const emit = defineEmits<{
         </h2>
         <p class="text-white/30 text-xs uppercase tracking-[0.15em] mb-5">{{ t(`mode.${guessMode}`) }}</p>
         <p class="text-6xl md:text-7xl font-black tabular-nums mb-1"
-          :class="guessMode === 'weight' ? 'text-red-400' : 'text-blue-400'"
+          :class="{
+            'text-red-400': guessMode === 'weight',
+            'text-emerald-400': guessMode === 'height',
+            'text-blue-400': guessMode === 'bst',
+            'text-pink-400': guessMode === 'hp',
+            'text-orange-400': guessMode === 'attack',
+            'text-yellow-400': guessMode === 'defense',
+            'text-purple-400': guessMode === 'specialAttack',
+            'text-green-400': guessMode === 'specialDefense',
+            'text-cyan-400': guessMode === 'speed',
+          }"
         >
           {{ score }}
         </p>
@@ -37,9 +70,7 @@ const emit = defineEmits<{
         <div class="space-y-2.5">
           <button
             class="w-full py-3 rounded-xl text-sm font-bold cursor-pointer transition-all"
-            :class="guessMode === 'weight'
-              ? 'bg-red-500/90 hover:bg-red-500 text-white shadow-lg shadow-red-500/20'
-              : 'bg-blue-500/90 hover:bg-blue-500 text-white shadow-lg shadow-blue-500/20'"
+            :class="buttonClass"
             @click="emit('playAgain')"
           >
             {{ t('game.playAgain') }}

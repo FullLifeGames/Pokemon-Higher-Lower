@@ -8,18 +8,21 @@ A Pokémon-themed guessing game inspired by [The Higher Lower Game](https://www.
 
 ## 🎮 How to Play
 
-1. **Choose a mode** — compare Pokémon by **Weight** (kg) or **Base Stat Total** (BST)
+1. **Choose a mode** — compare Pokémon by various attributes:
+   - **Physical**: Weight (kg), Height (m)
+   - **Stats**: Base Stat Total (BST), HP, Attack, Defense, Sp. Atk, Sp. Def, Speed
 2. **Set your filters** — pick a generation range and optionally restrict to fully evolved Pokémon
 3. **Guess higher or lower** — a Pokémon with a known value is shown on the left; guess whether the next Pokémon on the right has a higher or lower value
 4. **Keep your streak going** — each correct guess scores a point; one wrong guess and it's game over!
 
 ## ✨ Features
 
-- **Two game modes**: Weight and Base Stat Total
+- **Nine game modes**: Weight, Height, Base Stat Total, HP, Attack, Defense, Special Attack, Special Defense, and Speed
 - **Generation filtering**: Play with Pokémon from Gen 1–9
 - **Fully evolved filter**: Optionally limit to final evolution forms
 - **Bilingual**: Full English and German support (including localized Pokémon names)
-- **Per-mode high scores**: Separate high scores for Weight and BST, persisted in local storage
+- **Per-mode high scores**: Separate high scores for each mode, persisted in local storage
+- **Back button**: Return to menu at any time during gameplay
 - **Responsive design**: Works on desktop, mobile (portrait & landscape)
 - **Animated reveals**: Smooth counting animation when revealing values
 - **Type-based gradients**: Background colors match the Pokémon's type
@@ -31,7 +34,8 @@ A Pokémon-themed guessing game inspired by [The Higher Lower Game](https://www.
 - [Vite](https://vite.dev/) (via [Rolldown](https://rolldown.rs/))
 - [Tailwind CSS v4](https://tailwindcss.com/)
 - [shadcn-vue](https://www.shadcn-vue.com/) — UI components
-- [@pkmn/dex](https://github.com/pkmn/ps) — Pokémon data (species, stats, types)
+- [@pkmn/dex](https://github.com/pkmn/ps) — Pokémon data (species, stats, types, weight)
+- [@pkmn/sim](https://github.com/pkmn/ps) — Additional Pokémon data (height)
 - [vue-i18n](https://vue-i18n.intlify.dev/) — Internationalization
 - [@vueuse/core](https://vueuse.org/) — Composable utilities
 
